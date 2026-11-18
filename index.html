@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Saomy 💗</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;
+ font-family:'Trebuchet MS',sans-serif;
+ background:linear-gradient(135deg,#ffe1ed,#ffc1dc,#fff0f5);
+ color:#a83265;text-align:center;
+ overflow-x:hidden;
+}
+main{padding:35px 18px;max-width:600px;margin:auto}
+h1{font-size:2.4em;margin:25px 0 10px}
+p{font-size:1.1em;line-height:1.6}
+.bear{font-size:100px;margin:15px}
+button{
+ border:0;border-radius:30px;padding:14px 24px;
+ background:#ec6c9f;color:white;font-size:17px;
+ margin:10px;box-shadow:0 5px 12px #d66b9b55;
+}
+button:active{transform:scale(.96)}
+#surprise{display:none;margin-top:25px}
+.heart{font-size:90px;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.2)}}
+.float{
+ position:fixed;bottom:-30px;animation:up 7s linear infinite;
+ pointer-events:none;opacity:.7
+}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.card{
+ background:#ffffffaa;border-radius:25px;padding:20px;
+ box-shadow:0 8px 25px #c65d8b22
+}
+</style>
+</head>
+<body>
+<main>
+<div class="bear">🧸💗</div>
+<h1>Para Saomy</h1>
+<div class="card">
+<p>Hay personas que hacen los días más bonitos con tan solo estar presentes... y tú eres una de ellas. 💕</p>
+<p>Preparé algo pequeño, pero con mucho cariño para ti.</p>
+<button onclick="openGift()">🎁 Abrir mi regalo</button>
+<div id="surprise">
+<div class="heart">❤️</div>
+<h2>¡Eres muy especial, Saomy!</h2>
+<p>Gracias por cada momento, cada sonrisa y por hacer mis días más felices.</p>
+<p>Quiero que sepas que te quiero muchísimo. 💗</p>
+<div class="bear">🐻🌷</div>
+<h3>¿Te gustó mi sorpresa?</h3>
+<button onclick="answer('¡Qué felicidad! 💗')">¡Sí! 🥰</button>
+<button onclick="answer('Gracias por responder, Saomy 💕')">Me encantó 💞</button>
+<p id="reply"></p>
+</div>
+</div>
+<br>
+<button onclick="music()">🎵 Música suave</button>
+<p id="musicText">Pulsa para activar la música</p>
+<p>Hecho con cariño para ti. 💌</p>
+</main>
+<script>
+function openGift(){
+ document.getElementById('surprise').style.display='block';
+}
+function answer(msg){
+ document.getElementById('reply').textContent=msg;
+}
+let audio,playing=false;
+function music(){
+ if(!audio){
+  audio=new(window.AudioContext||window.webkitAudioContext)();
+  let notes=[261.63,329.63,392,329.63];
+  let i=0;
+  function play(){
+   if(!playing)return;
+   let osc=audio.createOscillator();
+   let gain=audio.createGain();
+   osc.type='sine';
+   osc.frequency.value=notes[i%notes.length];
+   gain.gain.setValueAtTime(.0001,audio.currentTime);
+   gain.gain.exponentialRampToValueAtTime(.045,audio.currentTime+.1);
+   gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+1);
+   osc.connect(gain);gain.connect(audio.destination);
+   osc.start();osc.stop(audio.currentTime+1);
+   i++;setTimeout(play,850);
+  }
+  playing=true;play();
+ }else{
+  playing=!playing;
+  if(playing){audio.resume();document.getElementById('musicText').textContent='Música activada 💗';}
+  else{audio.suspend();document.getElementById('musicText').textContent='Música pausada';}
+ }
+ if(playing)document.getElementById('musicText').textContent='Música activada 💗';
+}
+for(let i=0;i<14;i++){
+ let h=document.createElement('div');
+ h.className='float';h.textContent=['💗','💕','♡','🌸'][i%4];
+ h.style.left=Math.random()*100+'%';
+ h.style.animationDelay=Math.random()*7+'s';
+ h.style.fontSize=(18+Math.random()*18)+'px';
+ document.body.appendChild(h);
+}
+</script>
+</body>
+</html>
